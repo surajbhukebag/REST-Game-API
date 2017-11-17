@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import edu.sjsu.cmpe275.lab2.mapper.PersonMapper;
+import edu.sjsu.cmpe275.lab2.mapper.PlayerRequest;
 import edu.sjsu.cmpe275.lab2.mapper.PlayerResponse;
 import edu.sjsu.cmpe275.lab2.model.Player;
+import edu.sjsu.cmpe275.lab2.model.Sponsor;
 import edu.sjsu.cmpe275.lab2.services.PlayerService;
+import edu.sjsu.cmpe275.lab2.services.SponsorService;
 import edu.sjsu.cmpe275.lab2.validators.GameApisValidator;
 
 @Controller
@@ -23,19 +28,37 @@ public class PlayerController {
 	@Autowired
 	PlayerService playerService;
 
+	@Autowired
+	SponsorService sponsorService;
+
 	// Create a Player
-	
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createPlayer(@RequestBody Player player) {
+	public ResponseEntity<?> createPlayer(@RequestBody PlayerRequest player) {
 
 		PlayerResponse playerResponse = new PlayerResponse();
-		boolean isValid = GameApisValidator.validateCreatePlayerRequest(player, playerResponse);
+		boolean isValid = GameApisValidator.validateCreatePlayerRequest(player,
+				playerResponse);
 
 		ResponseEntity res = null;
 		HttpStatus httpStatus = null;
 
 		if (isValid) {
-			Player savedPlayer = playerService.createPlayer(player);
+			Sponsor existingSponsor = null;
+			if (player.getSponsor() != null) {
+				existingSponsor = sponsorService.getSponsor(String
+						.valueOf(player.getSponsor()));
+				if (existingSponsor == null) {
+					httpStatus = HttpStatus.NOT_FOUND;
+					playerResponse.setMsg("Sponsor does not exist");
+					res = new ResponseEntity(playerResponse, httpStatus);
+					return res;
+				}
+
+			}
+			Player newPerson = PersonMapper
+					.buildPlayer(player, existingSponsor);
+			Player savedPlayer = playerService.createPlayer(newPerson);
 			playerResponse.setPlayer(savedPlayer);
 			playerResponse.setMsg("Successfull created a new Player");
 			httpStatus = HttpStatus.OK;
@@ -50,7 +73,7 @@ public class PlayerController {
 	}
 
 	// Get A Player
-	
+
 	@GetMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPlayer(
 			@PathVariable(value = "playerId") String playerId) {
@@ -71,9 +94,9 @@ public class PlayerController {
 		res = new ResponseEntity(playerResponse, httpStatus);
 		return res;
 	}
-	
+
 	@DeleteMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> deletePlayerr(
+	public ResponseEntity<?> deletePlayer(
 			@PathVariable(value = "playerId") String playerId) {
 
 		PlayerResponse playerResponse = new PlayerResponse();
@@ -92,11 +115,58 @@ public class PlayerController {
 		res = new ResponseEntity(playerResponse, httpStatus);
 		return res;
 	}
-	
-	
-	
-	
-	
-	
+
+	@PostMapping(path = "/{playerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updatePlayer(
+			@PathVariable(value = "playerId") String playerId,
+			@RequestBody PlayerRequest player) {
+
+		PlayerResponse playerResponse = new PlayerResponse();
+		boolean isValid = GameApisValidator.validateCreatePlayerRequest(player,
+				playerResponse);
+
+		ResponseEntity res = null;
+		HttpStatus httpStatus = null;
+		Sponsor existingSponsor = null;
+
+		if (isValid) {
+
+			Player existingPlayer = playerService.getPlayer(String
+					.valueOf(playerId));
+			if (existingPlayer != null) {
+				
+				if (player.getSponsor() != null) {
+					existingSponsor = sponsorService.getSponsor(String
+							.valueOf(player.getSponsor()));
+					if (existingSponsor == null) {
+						httpStatus = HttpStatus.NOT_FOUND;
+						playerResponse.setMsg("Sponsor does not exist");
+						res = new ResponseEntity(playerResponse, httpStatus);
+						return res;
+					}
+
+				}
+				player.setId(Long.valueOf(playerId));
+				Player newPlayer = PersonMapper.buildPlayer(player,
+						existingSponsor);
+				Player savedPlayer = playerService.updatePlayer(existingPlayer, newPlayer);
+				playerResponse.setPlayer(savedPlayer);
+				playerResponse.setMsg("Successfull Updated Player");
+				httpStatus = HttpStatus.OK;
+
+			} else {
+				playerResponse.setMsg("Player does not exist");
+				httpStatus = HttpStatus.NOT_FOUND;
+			}
+
+		} else {
+			httpStatus = HttpStatus.BAD_REQUEST;
+		}
+
+		res = new ResponseEntity(playerResponse, httpStatus);
+
+		return res;
+
+	}
 
 }

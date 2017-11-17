@@ -35,6 +35,7 @@ public class PlayerService {
 
 		player.setFirstname(playerRequest.getFirstname());
 		player.setLastname(playerRequest.getLastname());
+		player.setEmail(playerRequest.getEmail());
 
 		if (playerRequest.getAddress() != null) {
 			player.setAddress(playerRequest.getAddress());
@@ -51,8 +52,11 @@ public class PlayerService {
 		if (playerRequest.getZip() != null) {
 			player.setZip(playerRequest.getZip());
 		}
+		if(playerRequest.getSponsor() != null) {
+			player.setSponsor(playerRequest.getSponsor());
+		}
 
-		updatePlayer = playerRepositry.save(player);
+		updatePlayer = playerRepositry.save(playerRequest);
 		return updatePlayer;
 	}
 

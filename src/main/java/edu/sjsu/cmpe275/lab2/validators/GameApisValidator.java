@@ -1,8 +1,8 @@
 package edu.sjsu.cmpe275.lab2.validators;
 
+import edu.sjsu.cmpe275.lab2.mapper.PlayerRequest;
 import edu.sjsu.cmpe275.lab2.mapper.PlayerResponse;
 import edu.sjsu.cmpe275.lab2.mapper.SponsorResponse;
-import edu.sjsu.cmpe275.lab2.model.Player;
 import edu.sjsu.cmpe275.lab2.model.Sponsor;
 
 public class GameApisValidator {
@@ -21,7 +21,7 @@ public class GameApisValidator {
 		return isValid;
 	}
 	// Validation Method for Player
-	public static boolean validateCreatePlayerRequest(Player player,
+	public static boolean validateCreatePlayerRequest(PlayerRequest player,
 			PlayerResponse playerResponse) {
 		boolean isValid = true;
 		if (player == null) {
@@ -39,6 +39,7 @@ public class GameApisValidator {
 			playerResponse.setMsg("First Name cannot be empty for Player.");
 			isValid = false;
 		}
+		
 		return isValid;
 	}
 	
