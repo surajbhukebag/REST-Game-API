@@ -32,6 +32,8 @@ public class OpponentController {
 		ResponseEntity res = null;
 		HttpStatus httpStatus = null;
 		OpponentResponse opponentResponse = new OpponentResponse();
+		System.out.println("Player 1 ID = " + player1Id);
+		System.out.println("Player 2 ID = " + player2Id);
 		Player playerOne = playerService.getPlayer(player1Id);
 		Player playerTwo = playerService.getPlayer(player2Id);
 		if(playerOne == null || playerTwo == null) {
@@ -41,6 +43,9 @@ public class OpponentController {
 		else {
 			Opponent o = opponentService.addOpponent(playerOne, playerTwo);
 			opponentResponse.setMsg("Successfully added opponent");
+			
+			// *** Added the HttpStatus
+			httpStatus= HttpStatus.OK;
 		}
 		
 		res = new ResponseEntity(opponentResponse, httpStatus);

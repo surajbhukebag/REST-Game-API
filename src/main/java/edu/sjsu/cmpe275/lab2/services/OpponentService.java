@@ -20,6 +20,12 @@ public class OpponentService {
 		op.setOpponentId(opponent.getId());
 		Opponent o = opponentRepository.save(op);
 		
+		// *** Added another record so that relationship is two way i.e. both players are opponents of each other.
+		Opponent op2 = new Opponent();
+		op2.setPlayerId(opponent.getId());
+		op2.setOpponentId(player.getId());
+		Opponent o2 = opponentRepository.save(op2);
+		
 		return o;
 	}
 

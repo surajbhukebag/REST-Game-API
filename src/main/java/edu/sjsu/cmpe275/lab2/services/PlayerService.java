@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.sjsu.cmpe275.lab2.dao.OpponentRepository;
 import edu.sjsu.cmpe275.lab2.dao.PlayerRespository;
 import edu.sjsu.cmpe275.lab2.model.Player;
 
@@ -14,6 +15,10 @@ public class PlayerService {
 
 	@Autowired
 	PlayerRespository playerRepositry;
+	
+	// ** Adding this so as to delete opponent record from the opponent table when player is deleted.
+	@Autowired
+	OpponentRepository opponentRepository;
 
 	public Player createPlayer(Player player) {
 		Player createdPlayer = playerRepositry.save(player);
@@ -26,7 +31,13 @@ public class PlayerService {
 	}
 
 	public void deletePlayer(String playerId) {
+		
+		// *** adding a new line to delete the record for deleted player from the opponent table as well.
+		opponentRepository.delete(new Long(playerId));
+				
 		playerRepositry.delete(new Long(playerId));
+		
+		
 	}
 
 	public Player updatePlayer(Player player, Player playerRequest) {
