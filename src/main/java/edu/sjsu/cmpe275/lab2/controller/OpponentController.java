@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.sjsu.cmpe275.lab2.mapper.OpponentResponse;
-import edu.sjsu.cmpe275.lab2.model.Opponent;
 import edu.sjsu.cmpe275.lab2.model.Player;
 import edu.sjsu.cmpe275.lab2.services.OpponentService;
 import edu.sjsu.cmpe275.lab2.services.PlayerService;
@@ -41,7 +40,7 @@ public class OpponentController {
 			httpStatus= HttpStatus.NOT_FOUND;
 		}
 		else {
-			Opponent o = opponentService.addOpponent(playerOne, playerTwo);
+			Player o = opponentService.addOpponent(playerOne, playerTwo);
 			opponentResponse.setMsg("Successfully added opponent");
 			
 			// *** Added the HttpStatus

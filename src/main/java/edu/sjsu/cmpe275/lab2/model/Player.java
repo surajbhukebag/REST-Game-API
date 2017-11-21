@@ -1,6 +1,7 @@
 package edu.sjsu.cmpe275.lab2.model;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,8 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Player {
@@ -34,11 +39,22 @@ public class Player {
 
 	private String zip;
 
-	@OneToMany(targetEntity = Opponent.class, mappedBy = "playerId")
-	private List<Opponent> opponents;
+	@JsonIgnoreProperties({"opponents"})
+	@ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "player_opponents")
+    @JoinColumns ({ @JoinColumn(name = "player_id", referencedColumnName="id"), @JoinColumn(name = "opponent_id", referencedColumnName="id") })
+	private Set<Player> opponents = new HashSet<Player>();
+	
+
+	public Set<Player> getOpponents() {
+		return opponents;
+	}
+
+	public void setOpponents(Set<Player> opponents) {
+		this.opponents = opponents;
+	}
 
 	@OneToOne()
-	@JoinColumn(name = "sponsorId")
 	private Sponsor sponsor;
 
 	public long getId() {
@@ -111,14 +127,6 @@ public class Player {
 
 	public void setZip(String zip) {
 		this.zip = zip;
-	}
-
-	public List<Opponent> getOpponents() {
-		return opponents;
-	}
-
-	public void setOpponents(List<Opponent> opponents) {
-		this.opponents = opponents;
 	}
 
 	public Sponsor getSponsor() {

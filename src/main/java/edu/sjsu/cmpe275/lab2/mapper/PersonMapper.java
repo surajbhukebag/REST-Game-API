@@ -32,6 +32,7 @@ public class PersonMapper {
 		if (sponsor != null) {
 			player.setSponsor(sponsor);
 		}
+		
 		return player;
 	}
 

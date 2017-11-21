@@ -83,6 +83,9 @@ public class PlayerController {
 		HttpStatus httpStatus = null;
 		Player player = playerService.getPlayer(playerId);
 		if (player != null) {
+			System.out.println("------------------------------------------------------");
+			System.out.println(player.getOpponents());
+			System.out.println("------------------------------------------------------");
 			playerResponse.setPlayer(player);
 			playerResponse.setMsg("Successfully Retrieved Player Details.");
 			httpStatus = HttpStatus.OK;
@@ -102,9 +105,10 @@ public class PlayerController {
 		PlayerResponse playerResponse = new PlayerResponse();
 		ResponseEntity res = null;
 		HttpStatus httpStatus = null;
-		Player player = playerService.getPlayer(playerId);
+		Player player = playerService.getPlayer(playerId);		
 		if (player != null) {
-			playerService.deletePlayer(playerId);
+			player.setOpponents(null);
+			playerService.deletePlayer(player);
 			playerResponse.setMsg("Successfully Deleted Player.");
 			httpStatus = HttpStatus.OK;
 		} else {
