@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe275.lab2.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import edu.sjsu.cmpe275.lab2.dao.PlayerRespository;
 import edu.sjsu.cmpe275.lab2.model.Player;
+import edu.sjsu.cmpe275.lab2.model.Sponsor;
 
 @Service
 @Transactional
@@ -26,9 +29,9 @@ public class PlayerService {
 	}
 
 	public void deletePlayer(Player player) {
-			
-		playerRepositry.delete(player);		
-		
+
+		playerRepositry.delete(player);
+
 	}
 
 	public Player updatePlayer(Player player, Player playerRequest) {
@@ -54,14 +57,22 @@ public class PlayerService {
 		if (playerRequest.getZip() != null) {
 			player.setZip(playerRequest.getZip());
 		}
-		if(playerRequest.getSponsor() != null) {
+		if (playerRequest.getSponsor() != null) {
 			player.setSponsor(playerRequest.getSponsor());
 		}
-		if(player.getOpponents() != null) {
+		if (player.getOpponents() != null) {
 			playerRequest.setOpponents(player.getOpponents());
 		}
 		updatePlayer = playerRepositry.save(playerRequest);
 		return updatePlayer;
+	}
+
+	public List<Player> getPlayerBySponsor(Sponsor sponsor) {
+		return playerRepositry.findPlayersBySponsor(sponsor.getId());
+	}
+
+	public void updatePlayer(Player player) {
+		playerRepositry.save(player);
 	}
 
 }

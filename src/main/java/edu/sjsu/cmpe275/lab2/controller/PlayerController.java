@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -83,9 +84,6 @@ public class PlayerController {
 		HttpStatus httpStatus = null;
 		Player player = playerService.getPlayer(playerId);
 		if (player != null) {
-			System.out.println("------------------------------------------------------");
-			System.out.println(player.getOpponents());
-			System.out.println("------------------------------------------------------");
 			playerResponse.setPlayer(player);
 			playerResponse.setMsg("Successfully Retrieved Player Details.");
 			httpStatus = HttpStatus.OK;
@@ -120,7 +118,7 @@ public class PlayerController {
 		return res;
 	}
 
-	@PostMapping(path = "/{playerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{playerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updatePlayer(
 			@PathVariable(value = "playerId") String playerId,
 			@RequestBody PlayerRequest player) {

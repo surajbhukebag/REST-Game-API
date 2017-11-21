@@ -6,7 +6,7 @@
 	<groupId>edu.sjsu.cmpe275.lab2</groupId>
 	<artifactId>SMS_GAMING_API</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>SMS_GAMING_API</name>
 	<description>Demo project for Spring Boot</description>
