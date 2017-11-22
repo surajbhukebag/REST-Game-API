@@ -96,13 +96,14 @@ public class SponsorController {
 		if (sponsor != null) {
 			List<Player> players = playerService.getPlayerBySponsor(sponsor);
 			if (players.isEmpty()) {
+				sponsorResponse.setSponsor(sponsor);
 				sponsorService.deleteSponsor(sponsorId);
 				sponsorResponse.setMsg("Successfully Deleted Sponsor.");
 				httpStatus = HttpStatus.OK;
 			} else {
 				sponsorResponse
 						.setMsg("Sponsor Exist for some players. Cannot be deleted");
-				httpStatus = HttpStatus.NOT_FOUND;
+				httpStatus = HttpStatus.BAD_REQUEST;
 			}
 		} else {
 			sponsorResponse.setMsg("Sponsor does not exist");

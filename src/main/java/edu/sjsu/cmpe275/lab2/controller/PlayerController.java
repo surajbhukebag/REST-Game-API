@@ -112,6 +112,7 @@ public class PlayerController {
 		HttpStatus httpStatus = null;
 		Player player = playerService.getPlayer(playerId);
 		if (player != null) {
+			playerResponse.setPlayer(player);
 			player.setOpponents(null);
 			playerService.deletePlayer(player);
 			playerResponse.setMsg("Successfully Deleted Player.");
