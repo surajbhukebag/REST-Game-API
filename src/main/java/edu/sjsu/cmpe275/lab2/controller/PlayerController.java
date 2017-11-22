@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.sjsu.cmpe275.lab2.mapper.PersonMapper;
 import edu.sjsu.cmpe275.lab2.mapper.PlayerRequest;
@@ -34,8 +34,28 @@ public class PlayerController {
 
 	// Create a Player
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createPlayer(@RequestBody PlayerRequest player) {
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createPlayer(
+			@RequestParam(value = "firstname", required = false) String firstname,
+			@RequestParam(value = "lastname", required = false) String lastname,
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "email", required = false) String email,
+			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "city", required = false) String city,
+			@RequestParam(value = "state", required = false) String state,
+			@RequestParam(value = "zip", required = false) String zip,
+			@RequestParam(value = "sponsor", required = false) String sponsor) {
+
+		PlayerRequest player = new PlayerRequest();
+		player.setAddress(address);
+		player.setCity(city);
+		player.setDescription(description);
+		player.setEmail(email);
+		player.setFirstname(firstname);
+		player.setLastname(lastname);
+		player.setSponsor(Long.valueOf(sponsor));
+		player.setState(state);
+		player.setZip(zip);
 
 		PlayerResponse playerResponse = new PlayerResponse();
 		boolean isValid = GameApisValidator.validateCreatePlayerRequest(player,
@@ -126,10 +146,29 @@ public class PlayerController {
 		return res;
 	}
 
-	@PutMapping(path = "/{playerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updatePlayer(
 			@PathVariable(value = "playerId") String playerId,
-			@RequestBody PlayerRequest player) {
+			@RequestParam(value = "firstname", required = false) String firstname,
+			@RequestParam(value = "lastname", required = false) String lastname,
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "email", required = false) String email,
+			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "city", required = false) String city,
+			@RequestParam(value = "state", required = false) String state,
+			@RequestParam(value = "zip", required = false) String zip,
+			@RequestParam(value = "sponsor", required = false) String sponsor) {
+
+		PlayerRequest player = new PlayerRequest();
+		player.setAddress(address);
+		player.setCity(city);
+		player.setDescription(description);
+		player.setEmail(email);
+		player.setFirstname(firstname);
+		player.setLastname(lastname);
+		player.setSponsor(Long.valueOf(sponsor));
+		player.setState(state);
+		player.setZip(zip);
 
 		PlayerResponse playerResponse = new PlayerResponse();
 		boolean isValid = GameApisValidator.validateCreatePlayerRequest(player,
