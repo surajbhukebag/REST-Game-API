@@ -28,8 +28,7 @@ public class OpponentController {
 	OpponentService opponentService;
 
 	@PutMapping(path = "/{player1}/{player2}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addOpponent(
-			@PathVariable(value = "player1") String player1Id,
+	public ResponseEntity<?> addOpponent(@PathVariable(value = "player1") String player1Id,
 			@PathVariable(value = "player2") String player2Id) {
 
 		ResponseEntity res = null;
@@ -39,9 +38,14 @@ public class OpponentController {
 		System.out.println("Player 2 ID = " + player2Id);
 		Player playerOne = playerService.getPlayer(player1Id);
 		Player playerTwo = playerService.getPlayer(player2Id);
+
 		if (playerOne == null || playerTwo == null) {
 			opponentResponse.setMsg("Player do not exist");
 			httpStatus = HttpStatus.NOT_FOUND;
+		}
+		if (playerOne.getOpponents().contains(playerTwo)) {
+			opponentResponse.setMsg("Player " + player1Id + " already has " + player2Id + " as opponnet");
+			httpStatus = HttpStatus.OK;
 		} else {
 			Player o = opponentService.addOpponent(playerOne, playerTwo);
 			opponentResponse.setMsg("Successfully added opponent");
@@ -49,15 +53,12 @@ public class OpponentController {
 			// *** Added the HttpStatus
 			httpStatus = HttpStatus.OK;
 		}
-
 		res = new ResponseEntity(opponentResponse, httpStatus);
 		return res;
-
 	}
 
 	@DeleteMapping(path = "/{player1}/{player2}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> deleteOpponent(
-			@PathVariable(value = "player1") String playerId,
+	public ResponseEntity<?> deleteOpponent(@PathVariable(value = "player1") String playerId,
 			@PathVariable(value = "player2") String opponentId) {
 
 		ResponseEntity res = null;
@@ -65,33 +66,39 @@ public class OpponentController {
 		OpponentResponse opponentResponse = new OpponentResponse();
 		System.out.println("Player 1 ID = " + playerId);
 		System.out.println("Opponent ID = " + opponentId);
+
 		Player player = playerService.getPlayer(playerId);
 		Player opponent = playerService.getPlayer(opponentId);
+
 		if (player == null) {
-			opponentResponse.setMsg("Player do not exist");
+			opponentResponse.setMsg("Player does not exist");
 			httpStatus = HttpStatus.NOT_FOUND;
 		} else if (opponent == null) {
-			opponentResponse.setMsg("Opponen do not exist");
+			opponentResponse.setMsg("Opponent does not exist");
 			httpStatus = HttpStatus.NOT_FOUND;
 		} else {
-			Set<Player> opponentSet = player.getOpponents();
+			Set<Player> playerOpponenstSet = player.getOpponents();
+			Set<Player> opponentOpponenstSet = opponent.getOpponents();
 
-			if (opponentSet == null) {
-				opponentResponse.setMsg("Player " + playerId
-						+ " do not have any Opponents ");
+			if (playerOpponenstSet == null) {
+				opponentResponse.setMsg("Player " + playerId + " does not have any Opponents ");
 				httpStatus = HttpStatus.NOT_FOUND;
-			} else if (opponentSet.contains(opponent)) {
-				opponentSet.remove(opponent);
-				player.setOpponents(opponentSet);
-				playerService.updatePlayer(player);
-				opponentResponse.setMsg("Successfully removed opponent");
-			} else {
-				opponentResponse.setMsg("Player " + playerId + "do not have "
-						+ opponentId + " as Opponent");
-			}
+			} else if (playerOpponenstSet.contains(opponent) && opponentOpponenstSet.contains(player)) {
 
-			// * Added the HttpStatus
-			httpStatus = HttpStatus.OK;
+				playerOpponenstSet.remove(opponent);
+				player.setOpponents(playerOpponenstSet);
+				playerService.updatePlayer(player);
+
+				opponentOpponenstSet.remove(player);
+				opponent.setOpponents(opponentOpponenstSet);
+				playerService.updatePlayer(opponent);
+
+				opponentResponse.setMsg("Successfully removed opponent");
+				httpStatus = HttpStatus.OK;
+			} else {
+				opponentResponse.setMsg("Player " + playerId + " does not have " + opponentId + " as Opponent");
+				httpStatus = HttpStatus.NOT_FOUND;
+			}
 		}
 
 		res = new ResponseEntity(opponentResponse, httpStatus);
