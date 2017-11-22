@@ -7,6 +7,17 @@ public class PlayerResponse {
 	private String msg;
 	
 	private Player player;
+	
+	private String group = "Group 13";
+
+	
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
 
 	public String getMsg() {
 		return msg;
@@ -16,7 +27,7 @@ public class PlayerResponse {
 		this.msg = msg;
 	}
 
-	public Player getPlayerr() {
+	public Player getPlayer() {
 		return player;
 	}
 
