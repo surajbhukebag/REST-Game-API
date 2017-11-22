@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.sjsu.cmpe275.lab2.mapper.SponsorResponse;
 import edu.sjsu.cmpe275.lab2.model.Player;
@@ -31,22 +31,38 @@ public class SponsorController {
 	@Autowired
 	PlayerService playerService;
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addNewSponsor(@RequestBody Sponsor sponsor) {
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addNewSponsor(
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "street", required = false) String street,
+			@RequestParam(value = "city", required = false) String city,
+			@RequestParam(value = "state", required = false) String state,
+			@RequestParam(value = "zip", required = false) String zip) {
 
-		SponsorResponse sponsorResponse = new SponsorResponse();
-		boolean isValid = GameApisValidator.validateCreateSponsorRequest(
-				sponsor, sponsorResponse);
 		ResponseEntity res = null;
 		HttpStatus httpStatus = null;
+		SponsorResponse sponsorResponse = new SponsorResponse();
+		if (name == null) {
+			sponsorResponse.setMsg("Name cannot be empty for Sponsor.");
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} else if (name.equals("")) {
+			sponsorResponse.setMsg("Name cannot be empty for Sponsor.");
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} else {
 
-		if (isValid) {
+			Sponsor sponsor = new Sponsor();
+			sponsor.setName(name);
+			sponsor.setAddress(street);
+			sponsor.setCity(city);
+			sponsor.setDescription(description);
+			sponsor.setState(state);
+			sponsor.setZip(zip);
 			Sponsor savedSponsor = sponsorService.createSponsor(sponsor);
 			sponsorResponse.setSponsor(savedSponsor);
 			sponsorResponse.setMsg("Successfull created a new Sponsor");
 			httpStatus = HttpStatus.OK;
-		} else {
-			httpStatus = HttpStatus.BAD_REQUEST;
+
 		}
 
 		res = new ResponseEntity(sponsorResponse, httpStatus);
@@ -117,17 +133,33 @@ public class SponsorController {
 	@PostMapping(path = "/{sponsorId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateSponsor(
 			@PathVariable(value = "sponsorId") String sponsorId,
-			@RequestBody Sponsor sponsorRequest) {
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "street", required = false) String street,
+			@RequestParam(value = "city", required = false) String city,
+			@RequestParam(value = "state", required = false) String state,
+			@RequestParam(value = "zip", required = false) String zip) {
 
-		SponsorResponse sponsorResponse = new SponsorResponse();
 		ResponseEntity res = null;
 		HttpStatus httpStatus = null;
-		boolean isValid = GameApisValidator.validateCreateSponsorRequest(
-				sponsorRequest, sponsorResponse);
-		if (isValid) {
+		SponsorResponse sponsorResponse = new SponsorResponse();
+
+		if (name == null) {
+			sponsorResponse.setMsg("Name cannot be empty for Sponsor.");
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} else if (name.equals("")) {
+			sponsorResponse.setMsg("Name cannot be empty for Sponsor.");
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} else {
 			Sponsor sponsor = sponsorService.getSponsor(sponsorId);
 			if (sponsor != null) {
-
+				Sponsor sponsorRequest = new Sponsor();
+				sponsorRequest.setName(name);
+				sponsorRequest.setAddress(street);
+				sponsorRequest.setCity(city);
+				sponsorRequest.setDescription(description);
+				sponsorRequest.setState(state);
+				sponsorRequest.setZip(zip);
 				Sponsor updatedSponsor = sponsorService.updateSponsor(sponsor,
 						sponsorRequest);
 				sponsorResponse.setSponsor(updatedSponsor);
@@ -139,8 +171,6 @@ public class SponsorController {
 				httpStatus = HttpStatus.NOT_FOUND;
 			}
 
-		} else {
-			httpStatus = HttpStatus.BAD_REQUEST;
 		}
 
 		res = new ResponseEntity(sponsorResponse, httpStatus);
