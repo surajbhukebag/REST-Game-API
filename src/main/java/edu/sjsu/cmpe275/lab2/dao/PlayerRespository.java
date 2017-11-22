@@ -14,4 +14,7 @@ public interface PlayerRespository extends CrudRepository<Player, Long> {
 	public List<Player> findPlayersBySponsor(
 			@Param("sponsor_id") long sponsor_id);
 
+	@Query(value = "SELECT * FROM player WHERE email = ?1", nativeQuery = true)
+	public Player findPlayerByEmail(@Param("email") String email);
+
 }

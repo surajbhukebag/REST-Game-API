@@ -45,24 +45,31 @@ public class PlayerController {
 		HttpStatus httpStatus = null;
 
 		if (isValid) {
-			Sponsor existingSponsor = null;
-			if (player.getSponsor() != null) {
-				existingSponsor = sponsorService.getSponsor(String
-						.valueOf(player.getSponsor()));
-				if (existingSponsor == null) {
-					httpStatus = HttpStatus.NOT_FOUND;
-					playerResponse.setMsg("Sponsor does not exist");
-					res = new ResponseEntity(playerResponse, httpStatus);
-					return res;
-				}
 
+			if (playerService.findPlayerByEmail(player.getEmail()) != null) {
+				playerResponse
+						.setMsg("Player with entered email already exist. Please enter a different email.");
+				httpStatus = HttpStatus.BAD_REQUEST;
+			} else {
+				Sponsor existingSponsor = null;
+				if (player.getSponsor() != null) {
+					existingSponsor = sponsorService.getSponsor(String
+							.valueOf(player.getSponsor()));
+					if (existingSponsor == null) {
+						httpStatus = HttpStatus.NOT_FOUND;
+						playerResponse.setMsg("Sponsor does not exist");
+						res = new ResponseEntity(playerResponse, httpStatus);
+						return res;
+					}
+
+				}
+				Player newPerson = PersonMapper.buildPlayer(player,
+						existingSponsor);
+				Player savedPlayer = playerService.createPlayer(newPerson);
+				playerResponse.setPlayer(savedPlayer);
+				playerResponse.setMsg("Successfull created a new Player");
+				httpStatus = HttpStatus.OK;
 			}
-			Player newPerson = PersonMapper
-					.buildPlayer(player, existingSponsor);
-			Player savedPlayer = playerService.createPlayer(newPerson);
-			playerResponse.setPlayer(savedPlayer);
-			playerResponse.setMsg("Successfull created a new Player");
-			httpStatus = HttpStatus.OK;
 		} else {
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}
@@ -103,7 +110,7 @@ public class PlayerController {
 		PlayerResponse playerResponse = new PlayerResponse();
 		ResponseEntity res = null;
 		HttpStatus httpStatus = null;
-		Player player = playerService.getPlayer(playerId);		
+		Player player = playerService.getPlayer(playerId);
 		if (player != null) {
 			player.setOpponents(null);
 			playerService.deletePlayer(player);
@@ -136,7 +143,7 @@ public class PlayerController {
 			Player existingPlayer = playerService.getPlayer(String
 					.valueOf(playerId));
 			if (existingPlayer != null) {
-				
+
 				if (player.getSponsor() != null) {
 					existingSponsor = sponsorService.getSponsor(String
 							.valueOf(player.getSponsor()));
@@ -151,7 +158,8 @@ public class PlayerController {
 				player.setId(Long.valueOf(playerId));
 				Player newPlayer = PersonMapper.buildPlayer(player,
 						existingSponsor);
-				Player savedPlayer = playerService.updatePlayer(existingPlayer, newPlayer);
+				Player savedPlayer = playerService.updatePlayer(existingPlayer,
+						newPlayer);
 				playerResponse.setPlayer(savedPlayer);
 				playerResponse.setMsg("Successfull Updated Player");
 				httpStatus = HttpStatus.OK;

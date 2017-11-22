@@ -75,4 +75,7 @@ public class PlayerService {
 		playerRepositry.save(player);
 	}
 
+	public Player findPlayerByEmail(String email) {
+		return playerRepositry.findPlayerByEmail(email);
+	}
 }
