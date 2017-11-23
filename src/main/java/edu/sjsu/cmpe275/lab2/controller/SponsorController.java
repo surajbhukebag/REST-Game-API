@@ -1,5 +1,5 @@
 /*
- * 
+ * Controller for Sponsor
  */
 package edu.sjsu.cmpe275.lab2.controller;
 

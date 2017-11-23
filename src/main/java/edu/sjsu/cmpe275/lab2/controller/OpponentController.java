@@ -1,5 +1,5 @@
 /*
- * 
+ *  Controller file for Opponent.
  */
 package edu.sjsu.cmpe275.lab2.controller;
 
