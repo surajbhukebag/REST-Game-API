@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -198,7 +197,7 @@ public class PlayerController {
 	 * @param sponsor the sponsor
 	 * @return the response entity
 	 */
-	@PutMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updatePlayer(
 			@PathVariable(value = "playerId") String playerId,
 			@RequestParam(value = "firstname", required = false) String firstname,
@@ -218,7 +217,9 @@ public class PlayerController {
 		player.setEmail(email);
 		player.setFirstname(firstname);
 		player.setLastname(lastname);
-		player.setSponsor(Long.valueOf(sponsor));
+		if (sponsor != null && !sponsor.equals("")) {
+			player.setSponsor(Long.valueOf(sponsor));
+		}
 		player.setState(state);
 		player.setZip(zip);
 
