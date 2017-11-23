@@ -15,7 +15,7 @@ public class PersonMapper {
 			player.setId(playerRequest.getId());
 		}
 		if (playerRequest.getAddress() != null) {
-			player.setAddress(playerRequest.getAddress());
+			player.setStreet(playerRequest.getAddress());
 		}
 		if (playerRequest.getCity() != null) {
 			player.setCity(playerRequest.getCity());

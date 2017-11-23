@@ -34,7 +34,7 @@ public class Player {
 
 	private String description;
 
-	private String address;
+	private String street;
 
 	private String city;
 
@@ -100,12 +100,12 @@ public class Player {
 		this.description = description;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
 	public String getCity() {

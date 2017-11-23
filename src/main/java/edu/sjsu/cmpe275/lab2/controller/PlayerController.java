@@ -40,7 +40,7 @@ public class PlayerController {
 			@RequestParam(value = "lastname", required = false) String lastname,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "email", required = false) String email,
-			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "street", required = false) String address,
 			@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip,
@@ -53,7 +53,9 @@ public class PlayerController {
 		player.setEmail(email);
 		player.setFirstname(firstname);
 		player.setLastname(lastname);
-		player.setSponsor(Long.valueOf(sponsor));
+		if(sponsor != null && !sponsor.equals("")) {
+			player.setSponsor(Long.valueOf(sponsor));
+		}
 		player.setState(state);
 		player.setZip(zip);
 

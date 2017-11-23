@@ -53,7 +53,7 @@ public class SponsorController {
 
 			Sponsor sponsor = new Sponsor();
 			sponsor.setName(name);
-			sponsor.setAddress(street);
+			sponsor.setStreet(street);
 			sponsor.setCity(city);
 			sponsor.setDescription(description);
 			sponsor.setState(state);
@@ -155,7 +155,7 @@ public class SponsorController {
 			if (sponsor != null) {
 				Sponsor sponsorRequest = new Sponsor();
 				sponsorRequest.setName(name);
-				sponsorRequest.setAddress(street);
+				sponsorRequest.setStreet(street);
 				sponsorRequest.setCity(city);
 				sponsorRequest.setDescription(description);
 				sponsorRequest.setState(state);

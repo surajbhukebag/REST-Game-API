@@ -33,8 +33,8 @@ public class SponsorService {
 
 		Sponsor updatedSponsor = null;
 		sponsor.setName(sponsorRequest.getName());
-		if (sponsorRequest.getAddress() != null) {
-			sponsor.setAddress(sponsorRequest.getAddress());
+		if (sponsorRequest.getStreet() != null) {
+			sponsor.setStreet(sponsorRequest.getStreet());
 		}
 		if (sponsorRequest.getCity() != null) {
 			sponsor.setCity(sponsorRequest.getCity());

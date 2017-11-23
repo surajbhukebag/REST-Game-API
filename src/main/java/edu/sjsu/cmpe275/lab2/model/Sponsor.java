@@ -18,7 +18,7 @@ public class Sponsor {
 
 	private String description;
 
-	private String address;
+	private String street;
 
 	private String city;
 
@@ -50,14 +50,6 @@ public class Sponsor {
 		this.description = description;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public String getCity() {
 		return city;
 	}
@@ -81,5 +73,15 @@ public class Sponsor {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	
+	
 
 }

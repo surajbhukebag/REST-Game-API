@@ -42,8 +42,8 @@ public class PlayerService {
 		player.setLastname(playerRequest.getLastname());
 		player.setEmail(playerRequest.getEmail());
 
-		if (playerRequest.getAddress() != null) {
-			player.setAddress(playerRequest.getAddress());
+		if (playerRequest.getStreet() != null) {
+			player.setStreet(playerRequest.getStreet());
 		}
 		if (playerRequest.getCity() != null) {
 			player.setCity(playerRequest.getCity());
