@@ -39,11 +39,14 @@ public class OpponentController {
 		Player playerOne = playerService.getPlayer(player1Id);
 		Player playerTwo = playerService.getPlayer(player2Id);
 
-		if (playerOne == null || playerTwo == null) {
-			opponentResponse.setMsg("Player do not exist");
+		if (playerOne == null) {
+			opponentResponse.setMsg("Player does not exist");
+			httpStatus = HttpStatus.NOT_FOUND;
+		} else if (playerTwo == null) {
+			opponentResponse.setMsg("Opponent does not exist");
 			httpStatus = HttpStatus.NOT_FOUND;
 		}
-		if (playerOne.getOpponents().contains(playerTwo)) {
+		else if (playerOne.getOpponents().contains(playerTwo)) {
 			opponentResponse.setMsg("Player " + player1Id + " already has " + player2Id + " as opponnet");
 			httpStatus = HttpStatus.OK;
 		} else {
