@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package edu.sjsu.cmpe275.lab2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +25,38 @@ import edu.sjsu.cmpe275.lab2.services.PlayerService;
 import edu.sjsu.cmpe275.lab2.services.SponsorService;
 import edu.sjsu.cmpe275.lab2.validators.GameApisValidator;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerController.
+ */
 @Controller
 @RequestMapping("/player")
 public class PlayerController {
 
+	/** The player service. */
 	@Autowired
 	PlayerService playerService;
 
+	/** The sponsor service. */
 	@Autowired
 	SponsorService sponsorService;
 
 	// Create a Player
 
+	/**
+	 * Creates the player.
+	 *
+	 * @param firstname the firstname
+	 * @param lastname the lastname
+	 * @param description the description
+	 * @param email the email
+	 * @param address the address
+	 * @param city the city
+	 * @param state the state
+	 * @param zip the zip
+	 * @param sponsor the sponsor
+	 * @return the response entity
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createPlayer(
 			@RequestParam(value = "firstname", required = false) String firstname,
@@ -104,6 +127,12 @@ public class PlayerController {
 
 	// Get A Player
 
+	/**
+	 * Gets the player.
+	 *
+	 * @param playerId the player id
+	 * @return the player
+	 */
 	@GetMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPlayer(
 			@PathVariable(value = "playerId") String playerId) {
@@ -125,6 +154,12 @@ public class PlayerController {
 		return res;
 	}
 
+	/**
+	 * Delete player.
+	 *
+	 * @param playerId the player id
+	 * @return the response entity
+	 */
 	@DeleteMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deletePlayer(
 			@PathVariable(value = "playerId") String playerId) {
@@ -148,6 +183,21 @@ public class PlayerController {
 		return res;
 	}
 
+	/**
+	 * Update player.
+	 *
+	 * @param playerId the player id
+	 * @param firstname the firstname
+	 * @param lastname the lastname
+	 * @param description the description
+	 * @param email the email
+	 * @param address the address
+	 * @param city the city
+	 * @param state the state
+	 * @param zip the zip
+	 * @param sponsor the sponsor
+	 * @return the response entity
+	 */
 	@PutMapping(path = "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updatePlayer(
 			@PathVariable(value = "playerId") String playerId,

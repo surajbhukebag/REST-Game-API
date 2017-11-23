@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package edu.sjsu.cmpe275.lab2.validators;
 
 import edu.sjsu.cmpe275.lab2.mapper.PlayerRequest;
@@ -5,8 +8,19 @@ import edu.sjsu.cmpe275.lab2.mapper.PlayerResponse;
 import edu.sjsu.cmpe275.lab2.mapper.SponsorResponse;
 import edu.sjsu.cmpe275.lab2.model.Sponsor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GameApisValidator.
+ */
 public class GameApisValidator {
 
+	/**
+	 * Validate create sponsor request.
+	 *
+	 * @param sponsor the sponsor
+	 * @param sponsorResponse the sponsor response
+	 * @return true, if successful
+	 */
 	public static boolean validateCreateSponsorRequest(Sponsor sponsor,
 			SponsorResponse sponsorResponse) {
 		boolean isValid = true;
@@ -23,6 +37,13 @@ public class GameApisValidator {
 		return isValid;
 	}
 
+	/**
+	 * Validate create player request.
+	 *
+	 * @param player the player
+	 * @param playerResponse the player response
+	 * @return true, if successful
+	 */
 	// Validation Method for Player
 	public static boolean validateCreatePlayerRequest(PlayerRequest player,
 			PlayerResponse playerResponse) {

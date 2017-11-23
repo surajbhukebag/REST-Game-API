@@ -1,10 +1,24 @@
+/*
+ * 
+ */
 package edu.sjsu.cmpe275.lab2.mapper;
 
 import edu.sjsu.cmpe275.lab2.model.Player;
 import edu.sjsu.cmpe275.lab2.model.Sponsor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PersonMapper.
+ */
 public class PersonMapper {
 
+	/**
+	 * Builds the player.
+	 *
+	 * @param playerRequest the player request
+	 * @param sponsor the sponsor
+	 * @return the player
+	 */
 	public static Player buildPlayer(PlayerRequest playerRequest,
 			Sponsor sponsor) {
 		Player player = new Player();

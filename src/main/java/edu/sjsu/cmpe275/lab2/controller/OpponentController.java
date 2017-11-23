@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package edu.sjsu.cmpe275.lab2.controller;
 
 import java.util.Set;
@@ -17,16 +20,29 @@ import edu.sjsu.cmpe275.lab2.model.Player;
 import edu.sjsu.cmpe275.lab2.services.OpponentService;
 import edu.sjsu.cmpe275.lab2.services.PlayerService;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OpponentController.
+ */
 @Controller
 @RequestMapping("/opponent")
 public class OpponentController {
 
+	/** The player service. */
 	@Autowired
 	PlayerService playerService;
 
+	/** The opponent service. */
 	@Autowired
 	OpponentService opponentService;
 
+	/**
+	 * Adds the opponent.
+	 *
+	 * @param player1Id the player 1 id
+	 * @param player2Id the player 2 id
+	 * @return the response entity
+	 */
 	@PutMapping(path = "/{player1}/{player2}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addOpponent(@PathVariable(value = "player1") String player1Id,
 			@PathVariable(value = "player2") String player2Id) {
@@ -60,6 +76,13 @@ public class OpponentController {
 		return res;
 	}
 
+	/**
+	 * Delete opponent.
+	 *
+	 * @param playerId the player id
+	 * @param opponentId the opponent id
+	 * @return the response entity
+	 */
 	@DeleteMapping(path = "/{player1}/{player2}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteOpponent(@PathVariable(value = "player1") String playerId,
 			@PathVariable(value = "player2") String opponentId) {

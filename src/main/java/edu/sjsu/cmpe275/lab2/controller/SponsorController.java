@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package edu.sjsu.cmpe275.lab2.controller;
 
 import java.util.List;
@@ -21,16 +24,33 @@ import edu.sjsu.cmpe275.lab2.services.PlayerService;
 import edu.sjsu.cmpe275.lab2.services.SponsorService;
 import edu.sjsu.cmpe275.lab2.validators.GameApisValidator;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SponsorController.
+ */
 @Controller
 @RequestMapping(path = "/sponsor")
 public class SponsorController {
 
+	/** The sponsor service. */
 	@Autowired
 	SponsorService sponsorService;
 
+	/** The player service. */
 	@Autowired
 	PlayerService playerService;
 
+	/**
+	 * Adds the new sponsor.
+	 *
+	 * @param name the name
+	 * @param description the description
+	 * @param street the street
+	 * @param city the city
+	 * @param state the state
+	 * @param zip the zip
+	 * @return the response entity
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addNewSponsor(
 			@RequestParam(value = "name", required = false) String name,
@@ -70,6 +90,11 @@ public class SponsorController {
 		return res;
 	}
 
+	/**
+	 * Gets the all sponsors.
+	 *
+	 * @return the all sponsors
+	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAllSponsors() {
 
@@ -80,6 +105,12 @@ public class SponsorController {
 
 	}
 
+	/**
+	 * Gets the sponsor.
+	 *
+	 * @param sponsorId the sponsor id
+	 * @return the sponsor
+	 */
 	@GetMapping(path = "/{sponsorId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getSponsor(
 			@PathVariable(value = "sponsorId") String sponsorId) {
@@ -101,6 +132,12 @@ public class SponsorController {
 		return res;
 	}
 
+	/**
+	 * Delete sponsor.
+	 *
+	 * @param sponsorId the sponsor id
+	 * @return the response entity
+	 */
 	@DeleteMapping(path = "/{sponsorId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteSponsor(
 			@PathVariable(value = "sponsorId") String sponsorId) {
@@ -130,6 +167,18 @@ public class SponsorController {
 		return res;
 	}
 
+	/**
+	 * Update sponsor.
+	 *
+	 * @param sponsorId the sponsor id
+	 * @param name the name
+	 * @param description the description
+	 * @param street the street
+	 * @param city the city
+	 * @param state the state
+	 * @param zip the zip
+	 * @return the response entity
+	 */
 	@PostMapping(path = "/{sponsorId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateSponsor(
 			@PathVariable(value = "sponsorId") String sponsorId,
